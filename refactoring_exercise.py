@@ -57,6 +57,10 @@ class Players:
   def how_many_players(self):
       return len(self.players)
 
+class Roll:
+  def __init__(self):
+      pass
+
 class Game:
     def __init__(self, questions: Questions, players: Players):
         self.questions = questions
@@ -104,16 +108,15 @@ class Game:
 
     @property
     def _current_category(self):
-        if self.player_information.places[self.player_information.current_player] == 0: return 'Pop'
-        if self.player_information.places[self.player_information.current_player] == 4: return 'Pop'
-        if self.player_information.places[self.player_information.current_player] == 8: return 'Pop'
-        if self.player_information.places[self.player_information.current_player] == 1: return 'Science'
-        if self.player_information.places[self.player_information.current_player] == 5: return 'Science'
-        if self.player_information.places[self.player_information.current_player] == 9: return 'Science'
-        if self.player_information.places[self.player_information.current_player] == 2: return 'Sports'
-        if self.player_information.places[self.player_information.current_player] == 6: return 'Sports'
-        if self.player_information.places[self.player_information.current_player] == 10: return 'Sports'
-        return 'Rock'
+        if self.player_information.places[self.player_information.current_player] in [0, 4, 8]:
+          return 'Pop'
+        elif self.player_information.places[self.player_information.current_player] in [1, 5, 9]:
+          return 'Science'
+        elif self.player_information.places[self.player_information.current_player] in [2, 6, 10]:
+          return 'Sports'
+        else:
+          return 'Rock'
+        
 
     def was_correctly_answered(self):
         if self.player_information.in_penalty_box[self.player_information.current_player]:
