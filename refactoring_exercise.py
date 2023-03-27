@@ -1,28 +1,45 @@
 #!/usr/bin/env python3
 
+class Questions:
+  def __init__(self):
+      self.pop_questions = []
+      self.science_questions = []
+      self.sports_questions = []
+      self.rock_questions = []
+
+      for i in range(50):
+            self.pop_questions.append(self.create_question(i, "Pop Question"))
+            self.science_questions.append(self.create_question(i, "Science Question"))
+            self.sports_questions.append(self.create_question(i, "Sports Question"))
+            self.rock_questions.append(self.create_question(i, "Rock Question"))
+
+  def create_question(self, index, question_category):
+        return f'{question_category} {index}'
+
 class Game:
-    def __init__(self):
+    def __init__(self, questions: Questions):
         self.players = []
         self.places = [0] * 6
         self.purses = [0] * 6
         self.in_penalty_box = [0] * 6
 
-        self.pop_questions = []
+        self.questions = questions
+        """ self.pop_questions = []
         self.science_questions = []
         self.sports_questions = []
-        self.rock_questions = []
+        self.rock_questions = [] """
 
         self.current_player = 0
         self.is_getting_out_of_penalty_box = False
 
-        for i in range(50):
-            self.pop_questions.append("Pop Question %s" % i)
-            self.science_questions.append("Science Question %s" % i)
-            self.sports_questions.append("Sports Question %s" % i)
-            self.rock_questions.append(self.create_rock_question(i))
-
-    def create_rock_question(self, index):
-        return "Rock Question %s" % index
+        """ for i in range(50):
+            self.pop_questions.append(self.create_question(i, "Pop Question"))
+            self.science_questions.append(self.create_question(i, "Science Question"))
+            self.sports_questions.append(self.create_question(i, "Sports Question"))
+            self.rock_questions.append(self.create_question(i, "Rock Question")) """
+    
+    def create_question(self, index, question_category):
+        return f'{question_category} {index}'
 
     def is_playable(self):
         return self.how_many_players >= 2
@@ -75,10 +92,10 @@ class Game:
             self._ask_question()
 
     def _ask_question(self):
-        if self._current_category == 'Pop': print(self.pop_questions.pop(0))
-        if self._current_category == 'Science': print(self.science_questions.pop(0))
-        if self._current_category == 'Sports': print(self.sports_questions.pop(0))
-        if self._current_category == 'Rock': print(self.rock_questions.pop(0))
+        if self._current_category == 'Pop': print(self.questions.pop_questions.pop(0))
+        if self._current_category == 'Science': print(self.questions.science_questions.pop(0))
+        if self._current_category == 'Sports': print(self.questions.sports_questions.pop(0))
+        if self._current_category == 'Rock': print(self.questions.rock_questions.pop(0))
 
     @property
     def _current_category(self):
@@ -148,7 +165,8 @@ from random import randrange
 if __name__ == '__main__':
     not_a_winner = False
 
-    game = Game()
+    questions = Questions()
+    game = Game(questions)
 
     game.add('Chet')
     game.add('Pat')
