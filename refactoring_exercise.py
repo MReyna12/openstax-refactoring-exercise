@@ -89,7 +89,7 @@ class Players(Questions):
       """
       return len(self.players)
 
-class Roll(Players, Questions):
+class Roll(Players):
     def __init__(self):
         super().__init__()
 
@@ -142,61 +142,76 @@ class Roll(Players, Questions):
         if self._current_category == 'Sports': print(self.sports_questions.pop(0))
         if self._current_category == 'Rock': print(self.rock_questions.pop(0))
 
-class CheckAnswer(Players):
-  def __init__(self):
-      super().__init__()
+class CheckAnswer(Roll):
+    def __init__(self):
+        super().__init__()
 
 
-  def was_correctly_answered(self):
-      if self.in_penalty_box[self.current_player]:
-          if self.is_getting_out_of_penalty_box:
-              return self.actions_taken_for_correct_answer()
-          else:
-              return self.increment_current_player_position()
-      else:
-          return self.actions_taken_for_correct_answer()
+    def was_correctly_answered(self):
+        if self.in_penalty_box[self.current_player]:
+            if self.is_getting_out_of_penalty_box:
+                return self.actions_taken_for_correct_answer()
+            else:
+                return self.increment_current_player_position()
+        else:
+            return self.actions_taken_for_correct_answer()
 
-  def actions_taken_for_correct_answer(self):
-      print('Answer was correct!!!!')
+    def actions_taken_for_correct_answer(self):
+        print('Answer was correct!!!!')
 
-      self.purses[self.current_player] += 1
+        self.purses[self.current_player] += 1
 
-      print(self.players[self.current_player] + \
-          ' now has ' + \
-          str(self.purses[self.current_player]) + \
-          ' Gold Coins.')
+        print(self.players[self.current_player] + \
+            ' now has ' + \
+            str(self.purses[self.current_player]) + \
+            ' Gold Coins.')
 
-      winner = self._did_player_win()
-      self.increment_current_player_position()
+        winner = self._did_player_win()
+        self.increment_current_player_position()
 
-      return winner
+        return winner
 
-  def increment_current_player_position(self):
-      self.current_player += 1
-      if self.current_player == len(self.players): self.current_player = 0
-      return True
-  
-  def wrong_answer(self):
-      print('Question was incorrectly answered')
-      print(self.players[self.current_player] + " was sent to the penalty box")
-      self.in_penalty_box[self.current_player] = True
+    def increment_current_player_position(self):
+        self.current_player += 1
+        if self.current_player == len(self.players): self.current_player = 0
+        return True
+    
+    def wrong_answer(self):
+        print('Question was incorrectly answered')
+        print(self.players[self.current_player] + " was sent to the penalty box")
+        self.in_penalty_box[self.current_player] = True
 
-      self.current_player += 1
-      if self.current_player == len(self.players): self.current_player = 0
-      return True
+        self.current_player += 1
+        if self.current_player == len(self.players): self.current_player = 0
+        return True
 
-  def _did_player_win(self):
-      return not (self.purses[self.current_player] == 6)
+    def _did_player_win(self):
+        return not (self.purses[self.current_player] == 6)
 
-class StartGame(CheckAnswer, Roll, Players):
-      def __init__(self):
-          super().__init__()
+class StartGame(CheckAnswer, Roll):
+    """
+    Starts the game by calling on two methods contained in parent classes.
+    """
+    def __init__(self):
+        super().__init__()
 
-      def add(self, player_name):
-          self.add_players(player_name)
+    def add(self, player_name):
+        """
+        Adds the player to the game by calling the add_players() method located in the Players class.
 
-      def roll(self, roll_number):
-          self.start_roll(roll_number)
+        Returns: 
+            None
+        """
+        self.add_players(player_name)
+
+    def roll(self, roll_number):
+        """
+        Rolls the game piece to generate an integer by calling the start_roll() method located in the Roll class.
+
+        Returns: 
+            None
+        """
+        self.start_roll(roll_number)
 
 if __name__ == '__main__':
     not_a_winner = False
