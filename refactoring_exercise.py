@@ -9,15 +9,27 @@ class Questions:
         self.rock_questions = []
 
         for i in range(50):
-              self.pop_questions.append(self.create_question(i, "Pop Question"))
-              self.science_questions.append(self.create_question(i, "Science Question"))
-              self.sports_questions.append(self.create_question(i, "Sports Question"))
-              self.rock_questions.append(self.create_question(i, "Rock Question"))
+              self.pop_questions.append(self.create_question("Pop Question", i))
+              self.science_questions.append(self.create_question("Science Question", i))
+              self.sports_questions.append(self.create_question("Sports Question", i))
+              self.rock_questions.append(self.create_question("Rock Question", i))
 
-    def create_question(self, index, question_category):
+    def create_question(self, question_category, index):
           return f'{question_category} {index}'
 
 class Players(Questions):
+    """
+    Creates the initial values for information connected to the players and determines if enough players have been added to play the game.
+
+    Instance Attributes
+    ----------
+    players (list): A list containing the names of each player added to the game.
+    current_player (int): An integer used as an index to determine the player currently playing the game.
+    places (list): A list containing integers used to determine each players place and which question category will be selected for a respective player's turn.
+    purses (list): A list containing the total gold coins for each player.
+    in_penalty_box (list): A list containing a True/False value for each player as it relates to their penalty box status.
+    is_getting_out_of_penalty_box (bool): A variable used to track whether a player will be removed from the penalty box.
+    """
     def __init__(self):
         super().__init__()
         self.players = []
@@ -28,17 +40,23 @@ class Players(Questions):
         self.is_getting_out_of_penalty_box = False
 
     def is_playable(self):
-        """Determines if there are at least two players in the game
-        
-            Return: A boolean value - true if players in the game is equal or greater than two or false otherwise.
+        """
+        Determines if there are at least two players in the game.
+
+        Returns: 
+            bool: True if players in the game is equal or greater than two, False otherwise.
         """
         return self.how_many_players >= 2
 
     def add_players(self, player_name):
-        """Adds a player name to the players[] and states the name of the player that was added to the game. 
-          Passes the player_name into a method that adds a variety of attributes for that particular player.
+        """
+        Adds a player name to the players[] and states the name and player number of the player that was added to the game. 
 
-            Return: None    
+        Args:
+            player_name (str): Name of a player to be added to the game.
+
+        Returns: 
+            None    
         """
         self.players.append(player_name)
         print(player_name + " was added")
@@ -46,7 +64,11 @@ class Players(Questions):
 
     @property
     def how_many_players(self):
-        return len(self.players)
+      """
+        Returns:
+            int: An integer related to the length of the players list.
+      """
+      return len(self.players)
 
 class Roll(Players, Questions):
     def __init__(self):
@@ -54,9 +76,6 @@ class Roll(Players, Questions):
 
     @property
     def _current_category(self):
-        print('This is the current_player: %s' % self.current_player)
-        print('This is the places: %s' % self.places)
-        print(self.places[self.current_player])
         if self.places[self.current_player] in [0, 4, 8]:
             return 'Pop'
         elif self.places[self.current_player] in [1, 5, 9]:
@@ -168,12 +187,15 @@ if __name__ == '__main__':
     game.add_players('Pat')
     game.add_players('Sue')
 
-    while True:
-        game.roll(randrange(5) + 1)
+    if game.is_playable():
+      while True:
+          game.roll(randrange(5) + 1)
 
-        if randrange(9) == 7:
-            not_a_winner = game.wrong_answer()
-        else:
-            not_a_winner = game.was_correctly_answered()
+          if randrange(9) == 7:
+              not_a_winner = game.wrong_answer()
+          else:
+              not_a_winner = game.was_correctly_answered()
 
-        if not not_a_winner: break
+          if not not_a_winner: break
+    else:
+      print('You\'ve either added too many or not enough players. Please make sure there are at least two, but no more than three players in order to play!')
