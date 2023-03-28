@@ -22,10 +22,9 @@ class Players(Questions):
         super().__init__()
         self.players = []
         self.current_player = 0
-        self.places = [0] * 6
-        self.purses = [0] * 6
-        self.in_penalty_box = [0] * 6
-
+        self.places = [0] * 3
+        self.purses = [0] * 3
+        self.in_penalty_box = [False] * 3
         self.is_getting_out_of_penalty_box = False
 
     def is_playable(self):
@@ -43,19 +42,7 @@ class Players(Questions):
         """
         self.players.append(player_name)
         print(player_name + " was added")
-        self.add_player_attributes()
-
-    def add_player_attributes(self):
-        """Upon a player being added to the game, sets initial values for their place, purse amount, and penalty box status.
-
-            Return: True
-        """
-        self.places[self.how_many_players] = 0
-        self.purses[self.how_many_players] = 0
-        self.in_penalty_box[self.how_many_players] = False
         print("They are player number %s" % len(self.players))
-        
-        return True
 
     @property
     def how_many_players(self):
@@ -67,6 +54,9 @@ class Roll(Players, Questions):
 
     @property
     def _current_category(self):
+        print('This is the current_player: %s' % self.current_player)
+        print('This is the places: %s' % self.places)
+        print(self.places[self.current_player])
         if self.places[self.current_player] in [0, 4, 8]:
             return 'Pop'
         elif self.places[self.current_player] in [1, 5, 9]:
