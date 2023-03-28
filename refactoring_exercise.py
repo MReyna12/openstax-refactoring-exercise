@@ -143,11 +143,28 @@ class Roll(Players):
         if self._current_category == 'Rock': print(self.rock_questions.pop(0))
 
 class CheckAnswer(Roll):
+    """
+    Checks to determine if an answer is correct or wrong and the actions to take based on said check.
+    """
     def __init__(self):
         super().__init__()
 
 
     def was_correctly_answered(self):
+        """
+        First if statement:
+            Check to see if the in_penalty_box[current_player] value is truthy (aka inside the penalty box).
+            Nested if statement: 
+                If truthy then check to see the is_getting_out_of_penalty_box is also truthy. 
+                If that value is also truthy, then the actions_taken_for_correct_answer() method runs and returns a truthy/falsy value. 
+            Nested else statement:
+                If falsy, then the answer was not correct and increment_current_player_position() runs and returns True.
+        Second else statement:
+            If the current_player is not in the penalty box, then run actions_taken_for_correct_answer(). 
+
+        Returns:
+            bool: Truthy/falsy value depending on the results of the method calls in the conditionals.  
+        """
         if self.in_penalty_box[self.current_player]:
             if self.is_getting_out_of_penalty_box:
                 return self.actions_taken_for_correct_answer()
@@ -157,6 +174,16 @@ class CheckAnswer(Roll):
             return self.actions_taken_for_correct_answer()
 
     def actions_taken_for_correct_answer(self):
+        """
+        Print statements that state the player got the answer correct and the number of coins said player now has.
+
+        Increases the number of coins in the applicable player's purse by 1.
+
+        Updates the current_players position 
+
+        Returns:
+            bool: True if the number of coins for the current_player in the purse is not 6, False otherwise.  
+        """
         print('Answer was correct!!!!')
 
         self.purses[self.current_player] += 1
@@ -172,21 +199,39 @@ class CheckAnswer(Roll):
         return winner
 
     def increment_current_player_position(self):
+        """
+        Increase current_player by 1. If the increase is equal to the length of the players list then set current_player to 0 (aka going back to the first player and continuing the game)
+
+        Returns:
+          bool: True
+        """
         self.current_player += 1
         if self.current_player == len(self.players): self.current_player = 0
         return True
     
     def wrong_answer(self):
+        """
+        Print statements regarding incorrect answer and moving to the penalty box.
+
+        Places the current_player in the penalty box.
+
+        Runs increment_current_player_position to increase current_player by 1.
+
+        Returns:
+          bool: True
+        """
         print('Question was incorrectly answered')
         print(self.players[self.current_player] + " was sent to the penalty box")
         self.in_penalty_box[self.current_player] = True
 
-        self.current_player += 1
-        if self.current_player == len(self.players): self.current_player = 0
-        return True
+        return self.increment_current_player_position()
 
     def _did_player_win(self):
-        return not (self.purses[self.current_player] == 6)
+        """
+        Returns:
+          bool: If a player's purse does not equal 6 then return True, otherwise False.
+        """
+        return (self.purses[self.current_player] != 6)
 
 class StartGame(CheckAnswer, Roll):
     """
