@@ -2,6 +2,16 @@
 from random import randrange
 
 class Questions:
+    """
+    Creates the categories and questions for the game.
+
+    Instance Attributes
+    ----------
+    pop_questions (list): A list containing integers 0 - 49.
+    science_questions (list): A list containing integers 0 - 49.
+    sports_questions (list): A list containing integers 0 - 49.
+    rock_questions (list): A list containing integers 0 - 49.
+    """
     def __init__(self):
         self.pop_questions = []
         self.science_questions = []
@@ -15,6 +25,15 @@ class Questions:
               self.rock_questions.append(self.create_question("Rock Question", i))
 
     def create_question(self, question_category, index):
+          """
+          Creates a string containing the question category name and the question number. 
+
+          Args:
+              question_category (str): Name of a player to be added to the game.
+              index (int): A number, starting at 0 and going until 49, meant to represent the question number.
+          Returns: 
+              str: A string containing the question category name and question number.    
+          """
           return f'{question_category} {index}'
 
 class Players(Questions):
