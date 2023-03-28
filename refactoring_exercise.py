@@ -16,8 +16,9 @@ class Questions:
     def create_question(self, index, question_category):
           return f'{question_category} {index}'
 
-class Players:
+class Players(Questions):
     def __init__(self):
+        super().__init__()
         self.players = []
         self.current_player = 0
         self.places = [0] * 6
@@ -59,71 +60,67 @@ class Players:
     def how_many_players(self):
         return len(self.players)
 
-class Roll:
-    def __init__(self, players: Players, questions: Questions):
-        self.player_information = players
-        self.questions: questions
+class Roll(Players, Questions):
+    def __init__(self):
+        super().__init__()
 
     @property
     def _current_category(self):
-        if self.player_information.places[self.player_information.current_player] in [0, 4, 8]:
+        if self.places[self.current_player] in [0, 4, 8]:
             return 'Pop'
-        elif self.player_information.places[self.player_information.current_player] in [1, 5, 9]:
+        elif self.places[self.current_player] in [1, 5, 9]:
             return 'Science'
-        elif self.player_information.places[self.player_information.current_player] in [2, 6, 10]:
+        elif self.places[self.current_player] in [2, 6, 10]:
             return 'Sports'
         else:
             return 'Rock'
 
     def start_roll(self, roll):
-        print("%s is the current player" % self.player_information.players[self.player_information.current_player])
+        print("%s is the current player" % self.players[self.current_player])
         print("They have rolled a %s" % roll)
 
-        if self.player_information.in_penalty_box[self.player_information.current_player]:
+        if self.in_penalty_box[self.current_player]:
             if roll % 2 != 0:
                 self.leaving_penalty_box(roll)
             else: 
-                print("%s is not getting out of the penalty box" % self.player_information.players[self.player_information.current_player])
-                self.player_information.is_getting_out_of_penalty_box = False
+                print("%s is not getting out of the penalty box" % self.players[self.current_player])
+                self.is_getting_out_of_penalty_box = False
         else:
             self.determine_new_current_player_place(roll)
 
-        self._ask_question() #Needed to move the _ask_question() method here so the question is asked regardless of the above outcome
+        self._ask_question()
 
     def leaving_penalty_box(self, roll):
-        self.player_information.is_getting_out_of_penalty_box = True
-        print("%s is getting out of the penalty box" % self.player_information.players[self.player_information.current_player])
+        self.is_getting_out_of_penalty_box = True
+        print("%s is getting out of the penalty box" % self.players[self.current_player])
 
         self.determine_new_current_player_place(roll)
       
     def determine_new_current_player_place(self, roll):
-        self.player_information.places[self.player_information.current_player] = self.player_information.places[self.player_information.current_player] + roll
+        self.places[self.current_player] = self.places[self.current_player] + roll
 
-        if self.player_information.places[self.player_information.current_player] > 11:
-              self.player_information.places[self.player_information.current_player] = self.player_information.places[self.player_information.current_player] - 12
+        if self.places[self.current_player] > 11:
+              self.places[self.current_player] = self.places[self.current_player] - 12
 
-        print(self.player_information.players[self.player_information.current_player] + \
+        print(self.players[self.current_player] + \
           '\'s new location is ' + \
-          str(self.player_information.places[self.player_information.current_player]))
+          str(self.places[self.current_player]))
 
-    def _ask_question(self): #Removing self allow the code to run w/o an Attribute Error. Why? If I remove then sometimes get new error that one of the questions lists are empty. Maybe something to do with underscore in beginning of name?
+    def _ask_question(self):
         print("The category is %s" % self._current_category)
-        if self._current_category == 'Pop': print(questions.pop_questions.pop(0))
-        print('Here is the length of the pop_questions list: %s' % len(questions.pop_questions))
-        if self._current_category == 'Science': print(questions.science_questions.pop(0))
-        print('Here is the length of the science_questions list: %s' % len(questions.science_questions))
-        if self._current_category == 'Sports': print(questions.sports_questions.pop(0))
-        print('Here is the length of the sports_questions list: %s' % len(questions.sports_questions))
-        if self._current_category == 'Rock': print(questions.rock_questions.pop(0))
-        print('Here is the length of the rock_questions list: %s' % len(questions.rock_questions))
+        if self._current_category == 'Pop': print(self.pop_questions.pop(0))
+        if self._current_category == 'Science': print(self.science_questions.pop(0))
+        if self._current_category == 'Sports': print(self.sports_questions.pop(0))
+        if self._current_category == 'Rock': print(self.rock_questions.pop(0))
 
-class CheckAnswer:
-  def __init__(self, players: Players):
-     self.player_information = players
+class CheckAnswer(Players):
+  def __init__(self):
+      super().__init__()
+
 
   def was_correctly_answered(self):
-      if self.player_information.in_penalty_box[self.player_information.current_player]:
-          if self.player_information.is_getting_out_of_penalty_box:
+      if self.in_penalty_box[self.current_player]:
+          if self.is_getting_out_of_penalty_box:
               return self.actions_taken_for_correct_answer()
           else:
               return self.increment_current_player_position()
@@ -133,11 +130,12 @@ class CheckAnswer:
   def actions_taken_for_correct_answer(self):
       print('Answer was correct!!!!')
 
-      self.player_information.purses[self.player_information.current_player] += 1
+      self.purses[self.current_player] += 1
+      print('This is the current_player int: %s' % self.current_player)
 
-      print(self.player_information.players[self.player_information.current_player] + \
+      print(self.players[self.current_player] + \
           ' now has ' + \
-          str(self.player_information.purses[self.player_information.current_player]) + \
+          str(self.purses[self.current_player]) + \
           ' Gold Coins.')
 
       winner = self._did_player_win()
@@ -146,43 +144,48 @@ class CheckAnswer:
       return winner
 
   def increment_current_player_position(self):
-      self.player_information.current_player += 1
-      if self.player_information.current_player == len(self.player_information.players): self.player_information.current_player = 0
+      self.current_player += 1
+      if self.current_player == len(self.players): self.current_player = 0
       return True
   
   def wrong_answer(self):
       print('Question was incorrectly answered')
-      print(self.player_information.players[self.player_information.current_player] + " was sent to the penalty box")
-      self.player_information.in_penalty_box[self.player_information.current_player] = True
+      print(self.players[self.current_player] + " was sent to the penalty box")
+      self.in_penalty_box[self.current_player] = True
 
-      self.player_information.current_player += 1
-      if self.player_information.current_player == len(self.player_information.players): self.player_information.current_player = 0
+      self.current_player += 1
+      if self.current_player == len(self.players): self.current_player = 0
       return True
 
   def _did_player_win(self):
-      return not (self.player_information.purses[self.player_information.current_player] == 6)
+      return not (self.purses[self.current_player] == 6)
 
+class StartGame(CheckAnswer, Roll, Players):
+      def __init__(self):
+          super().__init__()
+
+      def add(self, player_name):
+          self.add_players(player_name)
+
+      def roll(self, roll_number):
+          self.start_roll(roll_number)
 
 from random import randrange
 
 if __name__ == '__main__':
     not_a_winner = False
 
-    questions = Questions()
-    players = Players()
-    roll_logic = Roll(players, questions)
-    check_answer = CheckAnswer(players)
-
-    players.add_players('Chet')
-    players.add_players('Pat')
-    players.add_players('Sue')
+    game = StartGame()
+    game.add_players('Chet')
+    game.add_players('Pat')
+    game.add_players('Sue')
 
     while True:
-        roll_logic.start_roll(randrange(5) + 1)
+        game.roll(randrange(5) + 1)
 
         if randrange(9) == 7:
-            not_a_winner = check_answer.wrong_answer()
+            not_a_winner = game.wrong_answer()
         else:
-            not_a_winner = check_answer.was_correctly_answered()
+            not_a_winner = game.was_correctly_answered()
 
         if not not_a_winner: break
