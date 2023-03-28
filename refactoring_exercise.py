@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from random import randrange
 
 class Questions:
     def __init__(self):
@@ -131,7 +132,6 @@ class CheckAnswer(Players):
       print('Answer was correct!!!!')
 
       self.purses[self.current_player] += 1
-      print('This is the current_player int: %s' % self.current_player)
 
       print(self.players[self.current_player] + \
           ' now has ' + \
@@ -169,8 +169,6 @@ class StartGame(CheckAnswer, Roll, Players):
 
       def roll(self, roll_number):
           self.start_roll(roll_number)
-
-from random import randrange
 
 if __name__ == '__main__':
     not_a_winner = False
