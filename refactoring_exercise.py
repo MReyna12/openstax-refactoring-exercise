@@ -90,11 +90,20 @@ class Players(Questions):
       return len(self.players)
 
 class Roll(Players):
+    """
+    Rolls the game piece for each player, determines if a player leaves the penalty box and their new place, as well as the question to be asked.
+    """
     def __init__(self):
         super().__init__()
 
     @property
     def _current_category(self):
+        """
+        Determines the question category for the player based on the value in places[current_player].
+
+        Returns: 
+            str: A one word string that contains the name of a question category.
+        """
         if self.places[self.current_player] in [0, 4, 8]:
             return 'Pop'
         elif self.places[self.current_player] in [1, 5, 9]:
@@ -105,6 +114,16 @@ class Roll(Players):
             return 'Rock'
 
     def start_roll(self, roll):
+        """
+        Prints statements related to the who the current player is and their roll.
+
+        If the current_player is in the penalty box and their roll % 2 has a remainder of 1, then they will leave the penalty box.
+        Otherwise, the current_player remains in the penalty box.
+
+        If the current_player is not in the penalty box, then only their new place is determined.
+
+        After the conditionals run, _ask_question() is called to "pull" a question from the applicable category.
+        """
         print("%s is the current player" % self.players[self.current_player])
         print("They have rolled a %s" % roll)
 
@@ -120,12 +139,26 @@ class Roll(Players):
         self._ask_question()
 
     def leaving_penalty_box(self, roll):
+        """
+        The current_player leaves the penalty box by setting is_getting_out_of_penalty_box to True.
+
+        Prints a statement regarding the current_player leaving the penalty box.
+
+        Generate a new place for the current_player via determine_new_current_player_place.
+        """
         self.is_getting_out_of_penalty_box = True
         print("%s is getting out of the penalty box" % self.players[self.current_player])
 
         self.determine_new_current_player_place(roll)
       
     def determine_new_current_player_place(self, roll):
+        """
+        The current_player leaves the penalty box by setting is_getting_out_of_penalty_box to True.
+
+        Prints a statement regarding the current_player leaving the penalty box.
+
+        Generate a new place for the current_player via determine_new_current_player_place.
+        """
         self.places[self.current_player] = self.places[self.current_player] + roll
 
         if self.places[self.current_player] > 11:
@@ -136,6 +169,11 @@ class Roll(Players):
           str(self.places[self.current_player]))
 
     def _ask_question(self):
+        """
+        Prints a statement regarding the current_category.
+
+        Prints the question from one of the four categories based on the value of _current_category.
+        """
         print("The category is %s" % self._current_category)
         if self._current_category == 'Pop': print(self.pop_questions.pop(0))
         if self._current_category == 'Science': print(self.science_questions.pop(0))
