@@ -103,70 +103,59 @@ class Roll():
       '\'s new location is ' + \
       str(self.player_information.places[self.player_information.current_player]))
 
-  def _ask_question(self):
+  def _ask_question(self): #Refactor this to remove repetitiveness
     print("The category is %s" % self._current_category)
     if self._current_category == 'Pop': print(self.questions.pop_questions.pop(0))
     if self._current_category == 'Science': print(self.questions.science_questions.pop(0))
     if self._current_category == 'Sports': print(self.questions.sports_questions.pop(0))
     if self._current_category == 'Rock': print(self.questions.rock_questions.pop(0))
 
+class CheckAnswer:
+  def __init__(self, players: Players):
+     self.player_information = players
+     
+     self.is_getting_out_of_penalty_box = False
 
-class Game:
-    def __init__(self, questions: Questions, players: Players):
-        self.questions = questions
-        self.player_information = players
+  def was_correctly_answered(self):
+      if self.player_information.in_penalty_box[self.player_information.current_player]:
+          if self.is_getting_out_of_penalty_box:
+              return self.actions_taken_for_correct_answer()
+          else:
+              return self.increment_current_player_position()
+      else:
+          return self.actions_taken_for_correct_answer()
 
-        self.is_getting_out_of_penalty_box = False 
-        
+  def actions_taken_for_correct_answer(self):
+    print('Answer was correct!!!!')
 
-    def was_correctly_answered(self):
-        if self.player_information.in_penalty_box[self.player_information.current_player]:
-            if self.is_getting_out_of_penalty_box:
-                print('Answer was correct!!!!')
-                self.player_information.purses[self.player_information.current_player] += 1
-                print(self.player_information.players[self.player_information.current_player] + \
-                    ' now has ' + \
-                    str(self.player_information.purses[self.player_information.current_player]) + \
-                    ' Gold Coins.')
+    self.player_information.purses[self.player_information.current_player] += 1
 
-                winner = self._did_player_win()
-                self.player_information.current_player += 1
-                if self.player_information.current_player == len(self.player_information.players): self.player_information.current_player = 0
+    print(self.player_information.players[self.player_information.current_player] + \
+        ' now has ' + \
+        str(self.player_information.purses[self.player_information.current_player]) + \
+        ' Gold Coins.')
 
-                return winner
-            else:
-                self.player_information.current_player += 1
-                if self.player_information.current_player == len(self.player_information.players): self.player_information.current_player = 0
-                return True
+    winner = self._did_player_win()
+    self.increment_current_player_position()
 
+    return winner
 
+  def increment_current_player_position(self):
+    self.player_information.current_player += 1
+    if self.player_information.current_player == len(self.player_information.players): self.player_information.current_player = 0
+    return True
+  
+  def wrong_answer(self):
+      print('Question was incorrectly answered')
+      print(self.player_information.players[self.player_information.current_player] + " was sent to the penalty box")
+      self.player_information.in_penalty_box[self.player_information.current_player] = True
 
-        else:
+      self.player_information.current_player += 1
+      if self.player_information.current_player == len(self.player_information.players): self.player_information.current_player = 0
+      return True
 
-            print("Answer was corrent!!!!")
-            self.player_information.purses[self.player_information.current_player] += 1
-            print(self.player_information.players[self.player_information.current_player] + \
-                ' now has ' + \
-                str(self.player_information.purses[self.player_information.current_player]) + \
-                ' Gold Coins.')
-
-            winner = self._did_player_win()
-            self.player_information.current_player += 1
-            if self.player_information.current_player == len(self.player_information.players): self.player_information.current_player = 0
-
-            return winner
-
-    def wrong_answer(self):
-        print('Question was incorrectly answered')
-        print(self.player_information.players[self.player_information.current_player] + " was sent to the penalty box")
-        self.player_information.in_penalty_box[self.player_information.current_player] = True
-
-        self.player_information.current_player += 1
-        if self.player_information.current_player == len(self.player_information.players): self.player_information.current_player = 0
-        return True
-
-    def _did_player_win(self):
-        return not (self.player_information.purses[self.player_information.current_player] == 6)
+  def _did_player_win(self):
+      return not (self.player_information.purses[self.player_information.current_player] == 6)
 
 
 from random import randrange
@@ -177,7 +166,7 @@ if __name__ == '__main__':
     questions = Questions()
     players = Players()
     roll_logic = Roll(players, questions)
-    game = Game(questions, players)
+    check_answer = CheckAnswer(players)
 
     players.add_players('Chet')
     players.add_players('Pat')
@@ -187,8 +176,8 @@ if __name__ == '__main__':
         roll_logic.start_roll(randrange(5) + 1)
 
         if randrange(9) == 7:
-            not_a_winner = game.wrong_answer()
+            not_a_winner = check_answer.wrong_answer()
         else:
-            not_a_winner = game.was_correctly_answered()
+            not_a_winner = check_answer.was_correctly_answered()
 
         if not not_a_winner: break
