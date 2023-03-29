@@ -108,22 +108,22 @@ class Roll(Players):
         Determines the question category for the player based on the value in places[current_player].
 
         Returns: 
-            str: A one word string that contains the name of a question category.
+            str: A string that contains the name of a question category.
         """
-        categories = list(self.question_bank.keys())
-        first_category = categories[0]
-        second_category = categories[1]
-        third_category = categories[2]
-        fourth_category = categories[3]
+        question_categories = list(self.question_bank.keys())
+        first_question_category = question_categories[0]
+        second_question_category = question_categories[1]
+        third_question_category = question_categories[2]
+        fourth_question_category = question_categories[3]
 
         if self.places[self.current_player] in [0, 4, 8]:
-            return first_category
+            return first_question_category
         elif self.places[self.current_player] in [1, 5, 9]:
-            return second_category
+            return second_question_category
         elif self.places[self.current_player] in [2, 6, 10]:
-            return third_category
+            return third_question_category
         else:
-            return fourth_category
+            return fourth_question_category
 
     def start_roll(self, roll):
         """
@@ -184,20 +184,12 @@ class Roll(Players):
         """
         Prints a statement regarding the current_category.
 
-        Prints the question from one of the four categories based on the value of _current_category.
+        Prints the question at index 0 from one of the four categories based on the category returned from _current_category.
         """
         print("The category is %s" % self._current_category)
-        
-        categories = list(self.question_bank.keys())
-        first_category = categories[0]
-        second_category = categories[1]
-        third_category = categories[2]
-        fourth_category = categories[3]
 
-        if self._current_category == first_category: print(self.question_bank[first_category].pop(0))
-        if self._current_category == second_category: print(self.question_bank[second_category].pop(0))
-        if self._current_category == third_category: print(self.question_bank[third_category].pop(0))
-        if self._current_category == fourth_category: print(self.question_bank[fourth_category].pop(0))
+        print(self.question_bank[self._current_category].pop(0))
+
 
 class Check_Answer(Roll):
     """
