@@ -210,7 +210,7 @@ class Test_Roll(unittest.TestCase):
           game.roll(4)
           self.assertEqual('Orange', game._current_category, message)
 
-      def test_selected_category_rock(self):
+      def test_selected_category_corvette(self):
           game = Game.StartGame()
           message = 'places[current_player] should equal one of 3, 7, or 11'
 
