@@ -61,10 +61,24 @@ class Test_Check_Answers(unittest.TestCase):
 
           game.add_players('Michael')
           game.roll(8)
-          game.was_correctly_answered()
+          game.actions_taken_for_correct_answer()
           expect_one = game.purses[0]
 
           self.assertEqual(1, expect_one, message)
+
+      def test_go_to_next_player(self):
+          game = Game.StartGame()
+          message = 'Test'
+
+          game.add_players('Hillery')
+          game.add_players('Kira')
+          game.roll(6)
+          
+          game.increment_current_player_position()
+          expect_kira = game.players[game.current_player]
+
+          self.assertEqual('Kira', expect_kira, message)
+
           
         
 
