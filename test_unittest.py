@@ -1,6 +1,6 @@
 import refactoring_exercise as Game
 import unittest
-
+import random
 
 class Test_Players_Class(unittest.TestCase):  
     
@@ -163,7 +163,7 @@ class Test_Roll(unittest.TestCase):
 
       def test_rock_category_selected(self):
           game = Game.StartGame()
-          message = 'places[current_player] should equal one of 2, 6, or 10'
+          message = 'places[current_player] should equal one of 3, 7, or 11'
 
           game.add_players('Ana')
           game.roll(3)
@@ -174,7 +174,25 @@ class Test_Roll(unittest.TestCase):
 
           game.roll(4)
           self.assertEqual('Rock', game._current_category, message)
-        
+
+      def test_new_player_place_less_than_eleven(self):
+          game = Game.StartGame()
+          message = 'The rolled number is greater than 11.'
+
+          game.add_players('Abigail')
+          game.determine_new_current_player_place(6)
+          expect_six = game.places[game.current_player]
+          self.assertEqual(6, expect_six, message)
+
+      def test_new_player_greater_than_eleven(self):
+          game = Game.StartGame()
+          message = 'The rolled number is greater than 12.'
+
+          game.add_players('Abigail')
+          number_from_twelve_to_seventeen = random.randint(12, 17)
+          game.determine_new_current_player_place(number_from_twelve_to_seventeen)
+          expect_less_than_twelve = game.places[game.current_player]
+          self.assertLess(expect_less_than_twelve, 12, message)
 
         
 if __name__ == '__main__':

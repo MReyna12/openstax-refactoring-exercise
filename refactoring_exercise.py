@@ -153,11 +153,11 @@ class Roll(Players):
       
     def determine_new_current_player_place(self, roll):
         """
-        The current_player leaves the penalty box by setting is_getting_out_of_penalty_box to True.
+        Generates a new place for the current_player by taking places[current_player] and adding roll.
 
-        Prints a statement regarding the current_player leaving the penalty box.
+        If the aforementioned value is greater than 11, then subtract that value by 12.
 
-        Generate a new place for the current_player via determine_new_current_player_place.
+        Print the current player's new location.
         """
         self.places[self.current_player] = self.places[self.current_player] + roll
 
