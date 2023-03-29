@@ -17,12 +17,24 @@ class Questions:
         self.science_questions = []
         self.sports_questions = []
         self.rock_questions = []
+        self.question_bank = {}
 
         for i in range(50):
               self.pop_questions.append(self.create_question("Pop Question", i))
               self.science_questions.append(self.create_question("Science Question", i))
               self.sports_questions.append(self.create_question("Sports Question", i))
               self.rock_questions.append(self.create_question("Rock Question", i))
+
+    def add_question_categories(self, question_category):
+        if question_category in self.question_bank:
+            print('This question category already exists, please add a different question category.')
+        else:
+            self.question_bank[question_category] = []
+            self.create_question_test(question_category)
+
+    def create_question_test(self, question_category):  
+        for i in range(50):
+              self.question_bank[question_category].append(f'{question_category} Question {i}')
 
     def create_question(self, question_category, index):
           """
@@ -104,14 +116,20 @@ class Roll(Players):
         Returns: 
             str: A one word string that contains the name of a question category.
         """
+        categories = list(self.question_bank.keys())
+        first_category = categories[0]
+        second_category = categories[1]
+        third_category = categories[2]
+        fourth_category = categories[3]
+
         if self.places[self.current_player] in [0, 4, 8]:
-            return 'Pop'
+            return first_category
         elif self.places[self.current_player] in [1, 5, 9]:
-            return 'Science'
+            return second_category
         elif self.places[self.current_player] in [2, 6, 10]:
-            return 'Sports'
+            return third_category
         else:
-            return 'Rock'
+            return fourth_category
 
     def start_roll(self, roll):
         """
@@ -175,10 +193,17 @@ class Roll(Players):
         Prints the question from one of the four categories based on the value of _current_category.
         """
         print("The category is %s" % self._current_category)
-        if self._current_category == 'Pop': print(self.pop_questions.pop(0))
-        if self._current_category == 'Science': print(self.science_questions.pop(0))
-        if self._current_category == 'Sports': print(self.sports_questions.pop(0))
-        if self._current_category == 'Rock': print(self.rock_questions.pop(0))
+        
+        categories = list(self.question_bank.keys())
+        first_category = categories[0]
+        second_category = categories[1]
+        third_category = categories[2]
+        fourth_category = categories[3]
+
+        if self._current_category == first_category: print(self.question_bank[first_category].pop(0))
+        if self._current_category == second_category: print(self.question_bank[second_category].pop(0))
+        if self._current_category == third_category: print(self.question_bank[third_category].pop(0))
+        if self._current_category == fourth_category: print(self.question_bank[fourth_category].pop(0))
 
 class Check_Answer(Roll):
     """
@@ -302,6 +327,12 @@ if __name__ == '__main__':
     not_a_winner = False
 
     game = StartGame()
+
+    game.add_question_categories('Food')
+    game.add_question_categories('Music')
+    game.add_question_categories('TV')
+    game.add_question_categories('Gaming')
+
     game.add_players('Chet')
     game.add_players('Pat')
     game.add_players('Sue')
