@@ -63,9 +63,9 @@ class Players(Questions):
         Determines if there are at least two players in the game.
 
         Returns: 
-            bool: True if players in the game is equal or greater than two, False otherwise.
+            bool: True if players in the game is greater than one and less than four, False otherwise.
         """
-        return self.how_many_players >= 2
+        return self.how_many_players > 1 and self.how_many_players < 4
 
     def add_players(self, player_name):
         """
@@ -180,7 +180,7 @@ class Roll(Players):
         if self._current_category == 'Sports': print(self.sports_questions.pop(0))
         if self._current_category == 'Rock': print(self.rock_questions.pop(0))
 
-class CheckAnswer(Roll):
+class Check_Answer(Roll):
     """
     Checks to determine if an answer is correct or wrong and the actions to take based on said check.
     """
@@ -271,7 +271,7 @@ class CheckAnswer(Roll):
         """
         return (self.purses[self.current_player] != 6)
 
-class StartGame(CheckAnswer, Roll):
+class StartGame(Check_Answer, Roll):
     """
     Starts the game by calling on two methods contained in parent classes.
     """
@@ -315,4 +315,4 @@ if __name__ == '__main__':
 
           if not not_a_winner: break
     else:
-      print('You\'ve either added too many or not enough players. Please make sure there are at least two, but no more than three players in order to play!')
+      print('You\'ve either added too many or not enough players. Please make sure there are 2-3 players in order to play!')
