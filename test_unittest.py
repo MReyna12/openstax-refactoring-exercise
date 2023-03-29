@@ -60,7 +60,7 @@ class Test_Check_Answers(unittest.TestCase):
           message = 'The purse amount should have gone from zero to one'
 
           game.add_players('Nicole')
-          game.roll(8)
+          game.roll(3)
           game.actions_taken_for_correct_answer()
           expect_one = game.purses[0]
 
@@ -110,14 +110,70 @@ class Test_Check_Answers(unittest.TestCase):
           game = Game.StartGame()
           message = 'expect_false should be False'
 
-          game.add_players('Tom')
-          game.add_players('Ana')
           game.current_player = 0
           game.purses[0] = 6
 
           expect_false = game._did_player_win()
 
           self.assertEqual(False, expect_false, message)
+
+class Test_Roll(unittest.TestCase):
+
+      def test_pop_category_selected(self):
+          game = Game.StartGame()
+          message = 'places[current_player] should equal one of 0, 4, or 8'
+
+          game.add_players('Jerry')
+          game.roll(0)
+          self.assertEqual('Pop', game._current_category, message)
+
+          game.roll(4)
+          self.assertEqual('Pop', game._current_category, message)
+
+          game.roll(4)
+          self.assertEqual('Pop', game._current_category, message)
+
+      def test_science_category_selected(self):
+          game = Game.StartGame()
+          message = 'places[current_player] should equal one of 1, 5, or 9'
+
+          game.add_players('Jenny')
+          game.roll(1)
+          self.assertEqual('Science', game._current_category, message)
+
+          game.roll(4)
+          self.assertEqual('Science', game._current_category, message)
+
+          game.roll(4)
+          self.assertEqual('Science', game._current_category, message)
+
+      def test_sports_category_selected(self):
+          game = Game.StartGame()
+          message = 'places[current_player] should equal one of 2, 6, or 10'
+
+          game.add_players('Ava')
+          game.roll(2)
+          self.assertEqual('Sports', game._current_category, message)
+
+          game.roll(4)
+          self.assertEqual('Sports', game._current_category, message)
+
+          game.roll(4)
+          self.assertEqual('Sports', game._current_category, message)
+
+      def test_rock_category_selected(self):
+          game = Game.StartGame()
+          message = 'places[current_player] should equal one of 2, 6, or 10'
+
+          game.add_players('Ana')
+          game.roll(3)
+          self.assertEqual('Rock', game._current_category, message)
+
+          game.roll(4)
+          self.assertEqual('Rock', game._current_category, message)
+
+          game.roll(4)
+          self.assertEqual('Rock', game._current_category, message)
         
 
         
