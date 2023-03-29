@@ -5,48 +5,42 @@ class Questions:
     """
     Creates the categories and questions for the game.
 
-    Instance Attributes
+    Instance Attribute
     ----------
-    pop_questions (list): A list containing integers 0 - 49.
-    science_questions (list): A list containing integers 0 - 49.
-    sports_questions (list): A list containing integers 0 - 49.
-    rock_questions (list): A list containing integers 0 - 49.
+    question_bank (dict): A dictionary containing question categories as keys and their respective values of questions contained in a list.
     """
     def __init__(self):
-        self.pop_questions = []
-        self.science_questions = []
-        self.sports_questions = []
-        self.rock_questions = []
         self.question_bank = {}
 
-        for i in range(50):
-              self.pop_questions.append(self.create_question("Pop Question", i))
-              self.science_questions.append(self.create_question("Science Question", i))
-              self.sports_questions.append(self.create_question("Sports Question", i))
-              self.rock_questions.append(self.create_question("Rock Question", i))
-
     def add_question_categories(self, question_category):
-        if question_category in self.question_bank:
-            print('This question category already exists, please add a different question category.')
-        else:
-            self.question_bank[question_category] = []
-            self.create_question_test(question_category)
-
-    def create_question_test(self, question_category):  
-        for i in range(50):
-              self.question_bank[question_category].append(f'{question_category} Question {i}')
-
-    def create_question(self, question_category, index):
-          """
-          Creates a string containing the question category name and the question number. 
+        """
+          Adds the question_category to the question_bank as a key with a value of an empty list if the question_category does not already exist,
+          otherwise the user is notified that the category already exists.
 
           Args:
-              question_category (str): Name of a player to be added to the game.
-              index (int): A number, starting at 0 and going until 49, meant to represent the question number.
+              question_category (str): Name of a question category.
           Returns: 
-              str: A string containing the question category name and question number.    
+              None    
           """
-          return f'{question_category} {index}'
+        question_category_key = question_category.capitalize()
+        if question_category_key in self.question_bank:
+            print('This question category already exists, please add a different question category.')
+        else:
+            self.question_bank[question_category_key] = []
+            self.add_questions_to_question_bank(question_category_key)
+
+    def add_questions_to_question_bank(self, question_category_key):
+        """
+          Creates a string containing the question category name and the question number and adds it to the applicable question category. 
+
+          Args:
+              question_category_key (str): Name of a question category key.
+          Returns: 
+              None   
+        """  
+        for i in range(50):
+              question_statement = f'{question_category_key} Question {i}'
+              self.question_bank[question_category_key].append(question_statement)
 
 class Players(Questions):
     """
@@ -328,10 +322,10 @@ if __name__ == '__main__':
 
     game = StartGame()
 
-    game.add_question_categories('Food')
-    game.add_question_categories('Music')
-    game.add_question_categories('TV')
-    game.add_question_categories('Gaming')
+    game.add_question_categories('food')
+    game.add_question_categories('music')
+    game.add_question_categories('television')
+    game.add_question_categories('gaming')
 
     game.add_players('Chet')
     game.add_players('Pat')
