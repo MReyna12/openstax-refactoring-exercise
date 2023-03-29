@@ -15,7 +15,7 @@ class Test_Players_Class(unittest.TestCase):
         self.assertIn('Michael', player_container, message)    
 
     def test_how_many_players_exist(self):
-        game = Game.Players()
+        game = Game.StartGame()
         message = 'There is less or more than one person in player_container'
 
         game.add_players('Jacob')
@@ -25,7 +25,7 @@ class Test_Players_Class(unittest.TestCase):
         self.assertEqual(number_players, 2, message)
 
     def test_one_player(self):
-        game = Game.Players()
+        game = Game.StartGame()
         message = 'The game should not be playable - check that only one player has been added.'
 
         game.add_players('Nicholas')
@@ -34,7 +34,7 @@ class Test_Players_Class(unittest.TestCase):
         self.assertEqual(False, expect_false, message)   
 
     def test_correct_number_players(self):
-        game = Game.Players()
+        game = Game.StartGame()
         message = 'There are less than two or more than three players added to the players list'
 
         game.add_players('Priscilla')
@@ -44,7 +44,7 @@ class Test_Players_Class(unittest.TestCase):
         self.assertEqual(True, expect_true, message)
 
     def test_more_than_three_players(self):
-        game = Game.Players()
+        game = Game.StartGame()
         message = 'The game should not be playable - check that more than three players were added.'
   
         for i in range(5):
@@ -105,6 +105,19 @@ class Test_Check_Answers(unittest.TestCase):
           expect_bool = game.actions_taken_for_correct_answer()
 
           self.assertIsInstance(expect_bool, bool, message)
+
+      def test_player_won(self):
+          game = Game.StartGame()
+          message = 'expect_false should be False'
+
+          game.add_players('Tom')
+          game.add_players('Ana')
+          game.current_player = 0
+          game.purses[0] = 6
+
+          expect_false = game._did_player_win()
+
+          self.assertEqual(False, expect_false, message)
         
 
         
