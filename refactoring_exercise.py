@@ -217,7 +217,7 @@ class Check_Answer(Roll):
 
         Increases the number of coins in the applicable player's purse by 1.
 
-        Updates the current_players position 
+        Updates the current_players position only if the current_player does not have 6 coins.
 
         Returns:
             bool: True if the number of coins for the current_player in the purse is not 6, False otherwise.  
@@ -232,7 +232,9 @@ class Check_Answer(Roll):
             ' Gold Coins.')
 
         winner = self._did_player_win()
-        self.increment_current_player_position()
+
+        if winner:
+            self.increment_current_player_position()        
 
         return winner
 
@@ -313,6 +315,8 @@ if __name__ == '__main__':
           else:
               not_a_winner = game.was_correctly_answered()
 
-          if not not_a_winner: break
+          if not not_a_winner: 
+              print('%s won the game' % game.players[game.current_player])
+              break
     else:
       print('You\'ve either added too many or not enough players. Please make sure there are 2-3 players in order to play!')
