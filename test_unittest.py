@@ -5,16 +5,17 @@ import unittest
 class Test_Questions_Class(unittest.TestCase):
     def test_question_categories_added_question_bank(self):
         game = Game.StartGame()
-        message = 'There are not four keys in question_bank'
+        message = 'At least one of the question categories does not match the categories that should have been added.'
         
         game.add_question_categories('sports')
         game.add_question_categories('rock')
         game.add_question_categories('oceans')
         game.add_question_categories('countries')
         
-        expect_four_question_keys = len(game.question_bank.keys())
-
-        self.assertEqual(4, expect_four_question_keys, message)
+        categories_list = ['Sports', 'Rock', 'Oceans', 'Countries']
+        expected_keys = list(game.question_bank.keys())
+  
+        self.assertCountEqual(categories_list, expected_keys, message)
 
 class Test_Players_Class(unittest.TestCase):  
     
