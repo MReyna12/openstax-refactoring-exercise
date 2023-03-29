@@ -2,6 +2,20 @@ from random import randint
 import refactoring_exercise as Game
 import unittest
 
+class Test_Questions_Class(unittest.TestCase):
+    def test_question_categories_added_question_bank(self):
+        game = Game.StartGame()
+        message = 'There are not four keys in question_bank'
+        
+        game.add_question_categories('sports')
+        game.add_question_categories('rock')
+        game.add_question_categories('oceans')
+        game.add_question_categories('countries')
+        
+        expect_four_question_keys = len(game.question_bank.keys())
+
+        self.assertEqual(4, expect_four_question_keys, message)
+
 class Test_Players_Class(unittest.TestCase):  
     
     def test_add_player(self):
@@ -58,6 +72,11 @@ class Test_Check_Answers(unittest.TestCase):
           game = Game.StartGame()
           message = 'The purse amount should have gone from zero to one'
 
+          game.add_question_categories('parks')
+          game.add_question_categories('holidays')
+          game.add_question_categories('books')
+          game.add_question_categories('politics')
+
           game.add_players('Nicole')
           game.roll(3)
           game.actions_taken_for_correct_answer()
@@ -69,6 +88,11 @@ class Test_Check_Answers(unittest.TestCase):
           game = Game.StartGame()
           message = 'current_player was not increased by one'
 
+          game.add_question_categories('computers')
+          game.add_question_categories('fitness')
+          game.add_question_categories('fishing')
+          game.add_question_categories('hunting')
+          
           game.add_players('Stephanie')
           game.add_players('Jaime')
           game.roll(6)
@@ -82,6 +106,11 @@ class Test_Check_Answers(unittest.TestCase):
           game = Game.StartGame()
           message = 'current_player was not set to 0'
 
+          game.add_question_categories('celebrity')
+          game.add_question_categories('news')
+          game.add_question_categories('slogans')
+          game.add_question_categories('business')
+          
           game.add_players('Bill')
           game.add_players('Jill')
           game.roll(6)
@@ -96,6 +125,11 @@ class Test_Check_Answers(unittest.TestCase):
       def test_winner_returns_bool(self):
           game = Game.StartGame()
           message = 'The return value should be True or False'
+
+          game.add_question_categories('geography')
+          game.add_question_categories('science')
+          game.add_question_categories('history')
+          game.add_question_categories('literature')
 
           game.add_players('Chris')
           game.add_players('Samantha')
@@ -122,6 +156,11 @@ class Test_Roll(unittest.TestCase):
           game = Game.StartGame()
           message = 'places[current_player] should equal one of 0, 4, or 8'
 
+          game.add_question_categories('pop')
+          game.add_question_categories('rock')
+          game.add_question_categories('metal')
+          game.add_question_categories('rap')
+
           game.add_players('Jerry')
           game.roll(0)
           self.assertEqual('Pop', game._current_category, message)
@@ -132,47 +171,62 @@ class Test_Roll(unittest.TestCase):
           game.roll(4)
           self.assertEqual('Pop', game._current_category, message)
 
-      def test_selected_category_science(self):
+      def test_selected_category_monitors(self):
           game = Game.StartGame()
           message = 'places[current_player] should equal one of 1, 5, or 9'
 
+          game.add_question_categories('keyboards')
+          game.add_question_categories('monitors')
+          game.add_question_categories('motherboards')
+          game.add_question_categories('fans')
+
           game.add_players('Jenny')
           game.roll(1)
-          self.assertEqual('Science', game._current_category, message)
+          self.assertEqual('Monitors', game._current_category, message)
 
           game.roll(4)
-          self.assertEqual('Science', game._current_category, message)
+          self.assertEqual('Monitors', game._current_category, message)
 
           game.roll(4)
-          self.assertEqual('Science', game._current_category, message)
+          self.assertEqual('Monitors', game._current_category, message)
 
-      def test_selected_category_sports(self):
+      def test_selected_category_orange(self):
           game = Game.StartGame()
           message = 'places[current_player] should equal one of 2, 6, or 10'
 
+          game.add_question_categories('grape')
+          game.add_question_categories('banana')
+          game.add_question_categories('orange')
+          game.add_question_categories('pineapple')
+
           game.add_players('Ava')
           game.roll(2)
-          self.assertEqual('Sports', game._current_category, message)
+          self.assertEqual('Orange', game._current_category, message)
 
           game.roll(4)
-          self.assertEqual('Sports', game._current_category, message)
+          self.assertEqual('Orange', game._current_category, message)
 
           game.roll(4)
-          self.assertEqual('Sports', game._current_category, message)
+          self.assertEqual('Orange', game._current_category, message)
 
       def test_selected_category_rock(self):
           game = Game.StartGame()
           message = 'places[current_player] should equal one of 3, 7, or 11'
 
+          game.add_question_categories('suburban')
+          game.add_question_categories('tahoe')
+          game.add_question_categories('camaro')
+          game.add_question_categories('corvette')
+
           game.add_players('Ana')
           game.roll(3)
-          self.assertEqual('Rock', game._current_category, message)
+          self.assertEqual('Corvette', game._current_category, message)
 
           game.roll(4)
-          self.assertEqual('Rock', game._current_category, message)
+          self.assertEqual('Corvette', game._current_category, message)
 
           game.roll(4)
-          self.assertEqual('Rock', game._current_category, message)
+          self.assertEqual('Corvette', game._current_category, message)
 
       def test_new_player_place_less_than_eleven(self):
           game = Game.StartGame()
