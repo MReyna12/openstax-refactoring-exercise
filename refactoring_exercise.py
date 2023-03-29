@@ -66,7 +66,7 @@ class Players(Questions):
 
     def is_playable(self):
         """
-        Determines if there are at least two players in the game.
+        Determines if there are at least two but no more than 3 players in the game.
 
         Returns: 
             bool: True if players in the game is greater than one and less than four, False otherwise.
@@ -89,11 +89,11 @@ class Players(Questions):
 
     @property
     def how_many_players(self):
-      """
-        Returns:
-            int: An integer related to the length of the players list.
-      """
-      return len(self.players)
+        """
+          Returns:
+              int: An integer related to the length of the players list.
+        """
+        return len(self.players)
 
 class Roll(Players):
     """
@@ -127,7 +127,7 @@ class Roll(Players):
 
     def start_roll(self, roll):
         """
-        Prints statements related to the who the current player is and their roll.
+        Prints statements related to who the current player is and their roll.
 
         If the current_player is in the penalty box and their roll % 2 has a remainder of 1, then they will leave the penalty box.
         Otherwise, the current_player remains in the penalty box.
@@ -197,7 +197,6 @@ class Check_Answer(Roll):
     """
     def __init__(self):
         super().__init__()
-
 
     def was_correctly_answered(self):
         """
