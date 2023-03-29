@@ -4,13 +4,12 @@ import unittest
 
 class Test_Players_Class(unittest.TestCase):  
     
-    def test_add_a_player(self):
+    def test_add_player(self):
         game = Game.StartGame()
         message = 'Player was not added to the players list'
         player_container = game.players
 
         game.add_players('Michael')
-        game.add_players('Hillery')
         
         self.assertIn('Michael', player_container, message)    
 
@@ -24,7 +23,7 @@ class Test_Players_Class(unittest.TestCase):
 
         self.assertEqual(number_players, 2, message)
 
-    def test_one_player(self):
+    def test_one_player_does_not_start_game(self):
         game = Game.StartGame()
         message = 'The game should not be playable - check that only one player has been added.'
 
@@ -33,7 +32,7 @@ class Test_Players_Class(unittest.TestCase):
 
         self.assertEqual(False, expect_false, message)   
 
-    def test_correct_number_players(self):
+    def test_two_players_allows_start_game(self):
         game = Game.StartGame()
         message = 'There are less than two or more than three players added to the players list'
 
@@ -43,7 +42,7 @@ class Test_Players_Class(unittest.TestCase):
 
         self.assertEqual(True, expect_true, message)
 
-    def test_more_than_three_players(self):
+    def test_more_than_three_players_does_not_start_game(self):
         game = Game.StartGame()
         message = 'The game should not be playable - check that more than three players were added.'
   
@@ -55,7 +54,7 @@ class Test_Players_Class(unittest.TestCase):
 
 class Test_Check_Answers(unittest.TestCase):
 
-      def test_purse_increase(self):
+      def test_purse_increase_by_one(self):
           game = Game.StartGame()
           message = 'The purse amount should have gone from zero to one'
 
@@ -66,7 +65,7 @@ class Test_Check_Answers(unittest.TestCase):
 
           self.assertEqual(1, expect_one, message)
 
-      def test_go_to_next_player(self):
+      def test_go_to_next_player_turn(self):
           game = Game.StartGame()
           message = 'current_player was not increased by one'
 
@@ -79,7 +78,7 @@ class Test_Check_Answers(unittest.TestCase):
 
           self.assertEqual('Jaime', expect_kira, message)
 
-      def test_reset_current_player_to_zero(self):
+      def test_roll_order_restarts_after_all_players_roll(self):
           game = Game.StartGame()
           message = 'current_player was not set to 0'
 
@@ -106,7 +105,7 @@ class Test_Check_Answers(unittest.TestCase):
 
           self.assertIsInstance(expect_bool, bool, message)
 
-      def test_player_won(self):
+      def test_player_won_when_purse_contains_six_gold_coins(self):
           game = Game.StartGame()
           message = 'expect_false should be False'
 
@@ -119,7 +118,7 @@ class Test_Check_Answers(unittest.TestCase):
 
 class Test_Roll(unittest.TestCase):
 
-      def test_pop_category_selected(self):
+      def test_selected_category_pop(self):
           game = Game.StartGame()
           message = 'places[current_player] should equal one of 0, 4, or 8'
 
@@ -133,7 +132,7 @@ class Test_Roll(unittest.TestCase):
           game.roll(4)
           self.assertEqual('Pop', game._current_category, message)
 
-      def test_science_category_selected(self):
+      def test_selected_category_science(self):
           game = Game.StartGame()
           message = 'places[current_player] should equal one of 1, 5, or 9'
 
@@ -147,7 +146,7 @@ class Test_Roll(unittest.TestCase):
           game.roll(4)
           self.assertEqual('Science', game._current_category, message)
 
-      def test_sports_category_selected(self):
+      def test_selected_category_sports(self):
           game = Game.StartGame()
           message = 'places[current_player] should equal one of 2, 6, or 10'
 
@@ -161,7 +160,7 @@ class Test_Roll(unittest.TestCase):
           game.roll(4)
           self.assertEqual('Sports', game._current_category, message)
 
-      def test_rock_category_selected(self):
+      def test_selected_category_rock(self):
           game = Game.StartGame()
           message = 'places[current_player] should equal one of 3, 7, or 11'
 
