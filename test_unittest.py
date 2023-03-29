@@ -1,6 +1,6 @@
+from random import randint
 import refactoring_exercise as Game
 import unittest
-import random
 
 class Test_Players_Class(unittest.TestCase):  
     
@@ -189,7 +189,7 @@ class Test_Roll(unittest.TestCase):
           message = 'The rolled number is greater than 12.'
 
           game.add_players('Abigail')
-          number_from_twelve_to_seventeen = random.randint(12, 17)
+          number_from_twelve_to_seventeen = randint(12, 17)
           game.determine_new_current_player_place(number_from_twelve_to_seventeen)
           expect_less_than_twelve = game.places[game.current_player]
           self.assertLess(expect_less_than_twelve, 12, message)
